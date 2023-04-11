@@ -2,56 +2,54 @@ const express = require("express");
 require('dotenv').config();
 const {google} = require('googleapis');
 const dayjs = require('dayjs')
+const axios = require('axios');
 const app = express()
 app.use(express.json())
 
-const calender = google.calendar({
-    version: "v3",
-    auth: process.env.API_KEY
-})
+// const calender = google.calendar({
+//     version: "v3",
+//     auth: process.env.API_KEY
+// })
 
-const axios = require('axios');
 
 const port = process.env.PORT || 2000
 
-const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    process.env.REDIRECT_URL
-)
+// const oauth2Client = new google.auth.OAuth2(
+//     process.env.CLIENT_ID,
+//     process.env.CLIENT_SECRET,
+//     process.env.REDIRECT_URL
+// )
 
-const scopes = [
-    'https://www.googleapis.com/auth/calendar'
-]
+// const scopes = [
+//     'https://www.googleapis.com/auth/calendar'
+// ]
+// const token = ""
 
+// app.get("/",(req,res)=>{
+//     res.send("its working")
+// })
 
-const token = ""
+// app.get("/google",(req,res) => {
+//     const url = oauth2Client.generateAuthUrl({
+//         access_type :"offline",
+//         scope : scopes,
+//     });
 
-app.get("/",(req,res)=>{
-    res.send("its working")
-})
-
-app.get("/google",(req,res) => {
-    const url = oauth2Client.generateAuthUrl({
-        access_type :"offline",
-        scope : scopes,
-    });
-
-   res.redirect(url)
-    console.log(url)
-})
+//    res.redirect(url)
+//     console.log(url)
+// })
 
 
-app.get('/google/redirect', async (req,res) => {
-    const code = req.query.code;
+// app.get('/google/redirect', async (req,res) => {
+//     const code = req.query.code;
 
-    const { tokens} = await oauth2Client.getToken(code);
+//     const { tokens} = await oauth2Client.getToken(code);
 
-    oauth2Client.setCredentials(tokens);
+//     oauth2Client.setCredentials(tokens);
 
-    res.send("You've successfully logged in")
+//     res.send("You've successfully logged in")
 
-})
+// })
 
 const models = require('./models')
 const USER_ROUTES = require('./routes/index')

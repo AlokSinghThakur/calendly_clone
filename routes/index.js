@@ -9,7 +9,8 @@ ROUTES.get('/get-all-host',controller.getHost)
 ROUTES.post('/create-call-schedule',controller.createCallSchedule)
 ROUTES.get('/get-call-availability',controller.getCallSchedule)
 ROUTES.get('/schedule-event',controller.scheduleEvent)
-// ROUTES.get('/google-auth',controller.googleAuth)
+ROUTES.get('/google-auth',controller.googleAuth)
+ROUTES.get('/google/redirect',controller.googleAuthRedirect)
 
 
 module.exports = ROUTES

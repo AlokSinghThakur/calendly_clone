@@ -1,5 +1,26 @@
+require('dotenv').config();
+const {google} = require('googleapis');
+const dayjs = require('dayjs')
 const hostQueries = require("../models/queries/host/index")
 const callScheduleQueries = require("../models/queries/callSchedule/index")
+
+
+const calender = google.calendar({
+    version: "v3",
+    auth: process.env.API_KEY
+})
+
+const axios = require('axios');
+
+const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    process.env.REDIRECT_URL
+)
+
+const scopes = [
+    'https://www.googleapis.com/auth/calendar'
+]
 
 module.exports = {
     async createHost(req,res){
@@ -45,15 +66,26 @@ module.exports = {
         }
     },
 
-    // async googleAuth(req,res){
-    //     const url = oauth2Client.generateAuthUrl({
-    //         access_type :"offline",
-    //         scope : scopes,
-    //     });
+    async googleAuth(req,res){
+        const url = oauth2Client.generateAuthUrl({
+            access_type :"offline",
+            scope : scopes,
+        });
     
-    //    res.redirect(url)
+       res.redirect(url)
 
-    // },
+    },
+
+    async googleAuthRedirect(req,res){
+        const code = req.query.code;
+
+        const { tokens} = await oauth2Client.getToken(code);
+        console.log(tokens)
+    
+        oauth2Client.setCredentials(tokens);
+    
+        res.send("You've successfully logged in")
+    },
 
     async createCallSchedule(req,res){
         let id = req.body.id;
@@ -147,7 +179,7 @@ module.exports = {
                  dateTime: dayjs(new Date()).add(1,'day').toISOString(),
                  timeZone: "Asia/Kolkata",
              },end:{
-                 dateTime: dayjs(new Date()).add(1,'day').add(1,"hour").toISOString(),
+                 dateTime: dayjs(new Date()).add(1,'day').add(30,"minutes").toISOString(),
                  timeZone: "Asia/Kolkata",
              },
          }
