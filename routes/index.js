@@ -3,7 +3,6 @@ const ROUTES = express.Router();
 
 const controller = require("../controllers/index")
 
-
 ROUTES.post('/create-host',controller.createHost)
 ROUTES.get('/get-all-host',controller.getHost)
 ROUTES.post('/create-call-schedule',controller.createCallSchedule)
